@@ -1,6 +1,8 @@
 using StoreBackend.Data;
 using StoreBackend.Models;
 using StoreBackend.Repositories;
+using System.ComponentModel;
+using System.Transactions;
 
 namespace StoreManagement
 {
@@ -8,6 +10,8 @@ namespace StoreManagement
     {
         private readonly WarehouseContext _context;
         private readonly IRepository<InventoryTransaction> _transactionRepository;
+        private BindingList<InventoryTransaction> transactions = new BindingList<InventoryTransaction>();
+
         public TransactionListForm()
         {
             InitializeComponent();
@@ -27,8 +31,26 @@ namespace StoreManagement
 
         private void retrieveTransactionsBtn_Click(object sender, EventArgs e)
         {
-            // Reload transactions (if needed)
-            LoadTransactions();
+            DateTime fromDate = dateFromPicker.Value.Date;
+            DateTime toDate = dateToPicker.Value.Date;
+
+            // Retrieve transactions from repository
+            transactions.Clear(); // Clear the existing data
+
+            var retrievedTransactions = _transactionRepository.GetAll()
+                                 .Where(t => t.TransactionDate >= fromDate && t.TransactionDate <= toDate)
+                                 .ToList<InventoryTransaction>(); // Ensure it's InventoryTransaction
+
+            // Add retrieved transactions to the BindingList
+            foreach (var transaction in retrievedTransactions)
+            {
+                transactions.Add(transaction);
+            }
+
+            // Set DataGridView's DataSource to the BindingList
+            transactionDataGrid.DataSource = transactions;
+
+
         }
 
         private void LoadTransactions()
