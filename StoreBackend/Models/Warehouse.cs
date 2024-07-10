@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBackend.Models
 {
     public class Warehouse
     {
+        // Primary key for the Warehouse entity
         public int WarehouseID { get; set; }
+
+        // Description of the warehouse
         public string WarehouseDescription { get; set; }
     }
 }

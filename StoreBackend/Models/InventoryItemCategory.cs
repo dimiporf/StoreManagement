@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreBackend.Models
 {
     public class InventoryItemCategory
     {
+        // Primary key for the InventoryItemCategory entity
         public int InventoryItemCategoryID { get; set; }
+
+        // Description of the inventory item category
         public string InventoryItemCategoryDescription { get; set; }
     }
-
 }
