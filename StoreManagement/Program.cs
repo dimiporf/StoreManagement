@@ -1,5 +1,10 @@
+using StoreBackend.Data;
+using StoreBackend.Models;
+using StoreBackend.Repositories;
+
 namespace StoreManagement
 {
+
     internal static class Program
     {
         /// <summary>

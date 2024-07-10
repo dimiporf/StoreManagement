@@ -1,5 +1,11 @@
-﻿namespace StoreManagement
+﻿using StoreBackend.Data;
+using StoreBackend.Models;
+using StoreBackend.Repositories;
+
+namespace StoreManagement
 {
+    
+
     partial class TransactionListForm
     {
         /// <summary>
@@ -30,8 +36,6 @@
         {
             transactionDateTimePicker = new DateTimePicker();
             transactionDataGrid = new DataGridView();
-            addNewTransactionBtn = new Button();
-            retrieveTransactionsBtn = new Button();
             TransactionID = new DataGridViewTextBoxColumn();
             TransactionDate = new DataGridViewTextBoxColumn();
             TransactionType = new DataGridViewTextBoxColumn();
@@ -40,6 +44,8 @@
             Qty = new DataGridViewTextBoxColumn();
             Cost = new DataGridViewTextBoxColumn();
             SalePrice = new DataGridViewTextBoxColumn();
+            addNewTransactionBtn = new Button();
+            retrieveTransactionsBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)transactionDataGrid).BeginInit();
             SuspendLayout();
             // 
@@ -58,24 +64,6 @@
             transactionDataGrid.Name = "transactionDataGrid";
             transactionDataGrid.Size = new Size(844, 358);
             transactionDataGrid.TabIndex = 1;
-            // 
-            // addNewTransactionBtn
-            // 
-            addNewTransactionBtn.Location = new Point(580, 405);
-            addNewTransactionBtn.Name = "addNewTransactionBtn";
-            addNewTransactionBtn.Size = new Size(139, 33);
-            addNewTransactionBtn.TabIndex = 2;
-            addNewTransactionBtn.Text = "Add New Transaction";
-            addNewTransactionBtn.UseVisualStyleBackColor = true;
-            // 
-            // retrieveTransactionsBtn
-            // 
-            retrieveTransactionsBtn.Location = new Point(725, 405);
-            retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
-            retrieveTransactionsBtn.Size = new Size(125, 33);
-            retrieveTransactionsBtn.TabIndex = 3;
-            retrieveTransactionsBtn.Text = "Retrieve Transactions";
-            retrieveTransactionsBtn.UseVisualStyleBackColor = true;
             // 
             // TransactionID
             // 
@@ -116,6 +104,26 @@
             // 
             SalePrice.HeaderText = "Sale Price";
             SalePrice.Name = "SalePrice";
+            // 
+            // addNewTransactionBtn
+            // 
+            addNewTransactionBtn.Location = new Point(580, 405);
+            addNewTransactionBtn.Name = "addNewTransactionBtn";
+            addNewTransactionBtn.Size = new Size(139, 33);
+            addNewTransactionBtn.TabIndex = 2;
+            addNewTransactionBtn.Text = "Add New Transaction";
+            addNewTransactionBtn.UseVisualStyleBackColor = true;
+            addNewTransactionBtn.Click += addNewTransactionBtn_Click;
+            // 
+            // retrieveTransactionsBtn
+            // 
+            retrieveTransactionsBtn.Location = new Point(725, 405);
+            retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
+            retrieveTransactionsBtn.Size = new Size(125, 33);
+            retrieveTransactionsBtn.TabIndex = 3;
+            retrieveTransactionsBtn.Text = "Retrieve Transactions";
+            retrieveTransactionsBtn.UseVisualStyleBackColor = true;
+            retrieveTransactionsBtn.Click += retrieveTransactionsBtn_Click;
             // 
             // TransactionListForm
             // 
