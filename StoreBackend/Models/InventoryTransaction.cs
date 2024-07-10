@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace StoreBackend.Models
 {
     public class InventoryTransaction
     {
+        [Key]
         public int TransactionID { get; set; }
         public int TransactionType { get; set; } // 1 for purchases, 2 for sales
         public DateTime TransactionDate { get; set; }
