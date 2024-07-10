@@ -34,7 +34,7 @@ namespace StoreManagement
         /// </summary>
         private void InitializeComponent()
         {
-            transactionDateTimePicker = new DateTimePicker();
+            transactionFromDateTimePicker = new DateTimePicker();
             transactionDataGrid = new DataGridView();
             TransactionID = new DataGridViewTextBoxColumn();
             TransactionDate = new DataGridViewTextBoxColumn();
@@ -46,23 +46,26 @@ namespace StoreManagement
             SalePrice = new DataGridViewTextBoxColumn();
             addNewTransactionBtn = new Button();
             retrieveTransactionsBtn = new Button();
+            fromLabel = new Label();
+            toLabel = new Label();
+            transactionToDateTimePicker = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)transactionDataGrid).BeginInit();
             SuspendLayout();
             // 
-            // transactionDateTimePicker
+            // transactionFromDateTimePicker
             // 
-            transactionDateTimePicker.Location = new Point(12, 12);
-            transactionDateTimePicker.Name = "transactionDateTimePicker";
-            transactionDateTimePicker.Size = new Size(255, 23);
-            transactionDateTimePicker.TabIndex = 0;
+            transactionFromDateTimePicker.Location = new Point(70, 15);
+            transactionFromDateTimePicker.Name = "transactionFromDateTimePicker";
+            transactionFromDateTimePicker.Size = new Size(226, 23);
+            transactionFromDateTimePicker.TabIndex = 0;
             // 
             // transactionDataGrid
             // 
             transactionDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             transactionDataGrid.Columns.AddRange(new DataGridViewColumn[] { TransactionID, TransactionDate, TransactionType, WarehouseID, InventoryItemID, Qty, Cost, SalePrice });
-            transactionDataGrid.Location = new Point(12, 41);
+            transactionDataGrid.Location = new Point(29, 60);
             transactionDataGrid.Name = "transactionDataGrid";
-            transactionDataGrid.Size = new Size(844, 358);
+            transactionDataGrid.Size = new Size(838, 391);
             transactionDataGrid.TabIndex = 1;
             // 
             // TransactionID
@@ -107,7 +110,7 @@ namespace StoreManagement
             // 
             // addNewTransactionBtn
             // 
-            addNewTransactionBtn.Location = new Point(580, 405);
+            addNewTransactionBtn.Location = new Point(728, 12);
             addNewTransactionBtn.Name = "addNewTransactionBtn";
             addNewTransactionBtn.Size = new Size(139, 33);
             addNewTransactionBtn.TabIndex = 2;
@@ -117,7 +120,7 @@ namespace StoreManagement
             // 
             // retrieveTransactionsBtn
             // 
-            retrieveTransactionsBtn.Location = new Point(725, 405);
+            retrieveTransactionsBtn.Location = new Point(597, 12);
             retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
             retrieveTransactionsBtn.Size = new Size(125, 33);
             retrieveTransactionsBtn.TabIndex = 3;
@@ -125,24 +128,53 @@ namespace StoreManagement
             retrieveTransactionsBtn.UseVisualStyleBackColor = true;
             retrieveTransactionsBtn.Click += retrieveTransactionsBtn_Click;
             // 
+            // fromLabel
+            // 
+            fromLabel.AutoSize = true;
+            fromLabel.Location = new Point(29, 21);
+            fromLabel.Name = "fromLabel";
+            fromLabel.Size = new Size(35, 15);
+            fromLabel.TabIndex = 4;
+            fromLabel.Text = "From";
+            // 
+            // toLabel
+            // 
+            toLabel.AutoSize = true;
+            toLabel.Location = new Point(302, 21);
+            toLabel.Name = "toLabel";
+            toLabel.Size = new Size(19, 15);
+            toLabel.TabIndex = 5;
+            toLabel.Text = "To";
+            // 
+            // transactionToDateTimePicker
+            // 
+            transactionToDateTimePicker.Location = new Point(327, 15);
+            transactionToDateTimePicker.Name = "transactionToDateTimePicker";
+            transactionToDateTimePicker.Size = new Size(226, 23);
+            transactionToDateTimePicker.TabIndex = 6;
+            // 
             // TransactionListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(862, 450);
+            ClientSize = new Size(928, 463);
+            Controls.Add(transactionToDateTimePicker);
+            Controls.Add(toLabel);
+            Controls.Add(fromLabel);
             Controls.Add(retrieveTransactionsBtn);
             Controls.Add(addNewTransactionBtn);
             Controls.Add(transactionDataGrid);
-            Controls.Add(transactionDateTimePicker);
+            Controls.Add(transactionFromDateTimePicker);
             Name = "TransactionListForm";
             Text = "Transaction List";
             ((System.ComponentModel.ISupportInitialize)transactionDataGrid).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private DateTimePicker transactionDateTimePicker;
+        private DateTimePicker transactionFromDateTimePicker;
         private DataGridView transactionDataGrid;
         private Button addNewTransactionBtn;
         private Button retrieveTransactionsBtn;
@@ -154,5 +186,8 @@ namespace StoreManagement
         private DataGridViewTextBoxColumn Qty;
         private DataGridViewTextBoxColumn Cost;
         private DataGridViewTextBoxColumn SalePrice;
+        private Label fromLabel;
+        private Label toLabel;
+        private DateTimePicker transactionToDateTimePicker;
     }
 }
