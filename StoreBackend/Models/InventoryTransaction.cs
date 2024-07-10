@@ -34,5 +34,28 @@ namespace StoreBackend.Models
 
         // Navigation property to represent the relationship with Warehouse
         public virtual Warehouse Warehouse { get; set; }
+
+        // Properties for calculated totals
+        public decimal? TotalCost
+        {
+            get
+            {
+                if (TransactionType == 1)
+                    return Qty * Cost;
+                else
+                    return 0; // or handle differently if TransactionType is not 1
+            }
+        }
+
+        public decimal? TotalSale
+        {
+            get
+            {
+                if (TransactionType == 2)
+                    return Qty * SalePrice;
+                else
+                    return 0; // or handle differently if TransactionType is not 2
+            }
+        }
     }
 }

@@ -60,6 +60,8 @@ namespace StoreManagement
                 // Retrieve transactions from repository
                 var transactions = _transactionRepository.GetAll();
 
+                
+
                 // Bind transactions to DataGridView
                 transactionDataGrid.AutoGenerateColumns = false; // Ensure auto generation is off
                 transactionDataGrid.DataSource = transactions.ToList(); // Bind data source
@@ -73,6 +75,9 @@ namespace StoreManagement
                 Qty.DataPropertyName = "Qty";
                 Cost.DataPropertyName = "Cost";
                 SalePrice.DataPropertyName = "SalePrice";
+                TotalCost.DataPropertyName = "TotalCost";
+                TotalSales.DataPropertyName = "TotalSale";
+
             }
             catch (Exception ex)
             {

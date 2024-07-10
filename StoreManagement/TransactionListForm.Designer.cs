@@ -36,6 +36,11 @@ namespace StoreManagement
         {
             dateFromPicker = new DateTimePicker();
             transactionDataGrid = new DataGridView();
+            addNewTransactionBtn = new Button();
+            retrieveTransactionsBtn = new Button();
+            fromLabel = new Label();
+            toLabel = new Label();
+            dateToPicker = new DateTimePicker();
             TransactionID = new DataGridViewTextBoxColumn();
             TransactionDate = new DataGridViewTextBoxColumn();
             TransactionType = new DataGridViewTextBoxColumn();
@@ -44,11 +49,8 @@ namespace StoreManagement
             Qty = new DataGridViewTextBoxColumn();
             Cost = new DataGridViewTextBoxColumn();
             SalePrice = new DataGridViewTextBoxColumn();
-            addNewTransactionBtn = new Button();
-            retrieveTransactionsBtn = new Button();
-            fromLabel = new Label();
-            toLabel = new Label();
-            dateToPicker = new DateTimePicker();
+            TotalCost = new DataGridViewTextBoxColumn();
+            TotalSales = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)transactionDataGrid).BeginInit();
             SuspendLayout();
             // 
@@ -62,55 +64,15 @@ namespace StoreManagement
             // transactionDataGrid
             // 
             transactionDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            transactionDataGrid.Columns.AddRange(new DataGridViewColumn[] { TransactionID, TransactionDate, TransactionType, WarehouseID, InventoryItemID, Qty, Cost, SalePrice });
+            transactionDataGrid.Columns.AddRange(new DataGridViewColumn[] { TransactionID, TransactionDate, TransactionType, WarehouseID, InventoryItemID, Qty, Cost, SalePrice, TotalCost, TotalSales });
             transactionDataGrid.Location = new Point(29, 60);
             transactionDataGrid.Name = "transactionDataGrid";
-            transactionDataGrid.Size = new Size(838, 391);
+            transactionDataGrid.Size = new Size(945, 391);
             transactionDataGrid.TabIndex = 1;
-            // 
-            // TransactionID
-            // 
-            TransactionID.HeaderText = "Transaction ID";
-            TransactionID.Name = "TransactionID";
-            // 
-            // TransactionDate
-            // 
-            TransactionDate.HeaderText = "Transaction Date";
-            TransactionDate.Name = "TransactionDate";
-            // 
-            // TransactionType
-            // 
-            TransactionType.HeaderText = "Transaction Type";
-            TransactionType.Name = "TransactionType";
-            // 
-            // WarehouseID
-            // 
-            WarehouseID.HeaderText = "Warehouse ID";
-            WarehouseID.Name = "WarehouseID";
-            // 
-            // InventoryItemID
-            // 
-            InventoryItemID.HeaderText = "Inventory Item ID";
-            InventoryItemID.Name = "InventoryItemID";
-            // 
-            // Qty
-            // 
-            Qty.HeaderText = "Quantity";
-            Qty.Name = "Qty";
-            // 
-            // Cost
-            // 
-            Cost.HeaderText = "Cost";
-            Cost.Name = "Cost";
-            // 
-            // SalePrice
-            // 
-            SalePrice.HeaderText = "Sale Price";
-            SalePrice.Name = "SalePrice";
             // 
             // addNewTransactionBtn
             // 
-            addNewTransactionBtn.Location = new Point(728, 12);
+            addNewTransactionBtn.Location = new Point(835, 12);
             addNewTransactionBtn.Name = "addNewTransactionBtn";
             addNewTransactionBtn.Size = new Size(139, 33);
             addNewTransactionBtn.TabIndex = 2;
@@ -120,7 +82,7 @@ namespace StoreManagement
             // 
             // retrieveTransactionsBtn
             // 
-            retrieveTransactionsBtn.Location = new Point(597, 12);
+            retrieveTransactionsBtn.Location = new Point(704, 12);
             retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
             retrieveTransactionsBtn.Size = new Size(125, 33);
             retrieveTransactionsBtn.TabIndex = 3;
@@ -153,11 +115,62 @@ namespace StoreManagement
             dateToPicker.Size = new Size(226, 23);
             dateToPicker.TabIndex = 6;
             // 
+            // TransactionID
+            // 
+            TransactionID.HeaderText = "Transaction ID";
+            TransactionID.Name = "TransactionID";
+            TransactionID.Visible = false;
+            // 
+            // TransactionDate
+            // 
+            TransactionDate.HeaderText = "Date";
+            TransactionDate.Name = "TransactionDate";
+            // 
+            // TransactionType
+            // 
+            TransactionType.HeaderText = "Transaction Type";
+            TransactionType.Name = "TransactionType";
+            // 
+            // WarehouseID
+            // 
+            WarehouseID.HeaderText = "Warehouse";
+            WarehouseID.Name = "WarehouseID";
+            // 
+            // InventoryItemID
+            // 
+            InventoryItemID.HeaderText = "Inventory Item";
+            InventoryItemID.Name = "InventoryItemID";
+            // 
+            // Qty
+            // 
+            Qty.HeaderText = "Quantity";
+            Qty.Name = "Qty";
+            // 
+            // Cost
+            // 
+            Cost.HeaderText = "Cost / Item";
+            Cost.Name = "Cost";
+            // 
+            // SalePrice
+            // 
+            SalePrice.HeaderText = "Sale Price / Item";
+            SalePrice.Name = "SalePrice";
+            // 
+            // TotalCost
+            // 
+            TotalCost.HeaderText = "Total Cost";
+            TotalCost.Name = "TotalCost";
+            // 
+            // TotalSales
+            // 
+            TotalSales.HeaderText = "TotalSales";
+            TotalSales.Name = "TotalSales";
+            // 
             // TransactionListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(928, 463);
+            ClientSize = new Size(1040, 497);
             Controls.Add(dateToPicker);
             Controls.Add(toLabel);
             Controls.Add(fromLabel);
@@ -178,6 +191,9 @@ namespace StoreManagement
         private DataGridView transactionDataGrid;
         private Button addNewTransactionBtn;
         private Button retrieveTransactionsBtn;
+        private Label fromLabel;
+        private Label toLabel;
+        private DateTimePicker dateToPicker;
         private DataGridViewTextBoxColumn TransactionID;
         private DataGridViewTextBoxColumn TransactionDate;
         private DataGridViewTextBoxColumn TransactionType;
@@ -186,8 +202,7 @@ namespace StoreManagement
         private DataGridViewTextBoxColumn Qty;
         private DataGridViewTextBoxColumn Cost;
         private DataGridViewTextBoxColumn SalePrice;
-        private Label fromLabel;
-        private Label toLabel;
-        private DateTimePicker dateToPicker;
+        private DataGridViewTextBoxColumn TotalCost;
+        private DataGridViewTextBoxColumn TotalSales;
     }
 }
