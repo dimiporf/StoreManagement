@@ -1,8 +1,8 @@
 namespace StoreManagement
 {
-    public partial class Form1 : Form
+    public partial class TransactionListForm : Form
     {
-        public Form1()
+        public TransactionListForm()
         {
             InitializeComponent();
         }

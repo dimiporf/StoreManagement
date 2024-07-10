@@ -13,13 +13,24 @@ class Program
         if (TestDatabaseConnection())
         {
             Console.WriteLine("Database connection successful.");
-            SeedDatabase(); // Seed initial data if not already present
+            SeedDatabase();
+            // Example usage
+            using (var context = new WarehouseContext())
+            {
+                var transactionRepository = context.InventoryTransactionRepository;
+                var transactions = transactionRepository.GetAll();
+
+                Console.WriteLine("Inventory Transactions:");
+                foreach (var transaction in transactions)
+                {
+                    Console.WriteLine($"TransactionID: {transaction.TransactionID}, Date: {transaction.TransactionDate}, Qty: {transaction.Qty}, ...");
+                }
+            }
         }
         else
         {
             Console.WriteLine("Failed to connect to the database.");
         }
-
         Console.ReadLine(); // Keep the console window open
     }
 

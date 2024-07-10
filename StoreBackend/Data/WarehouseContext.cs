@@ -1,4 +1,5 @@
 ﻿using StoreBackend.Models;
+using StoreBackend.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,10 +17,19 @@ namespace StoreBackend.Data
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
 
+        // Repository injection for each entity
+        public IRepository<Warehouse> WarehouseRepository { get; set; }
+        public IRepository<InventoryItemCategory> InventoryItemCategoryRepository { get; set; }
+        public IRepository<InventoryItem> InventoryItemRepository { get; set; }
+        public IRepository<InventoryTransaction> InventoryTransactionRepository { get; set; }
+
         // Constructor to initialize DbContext with connection string name
         public WarehouseContext() : base("name=WarehouseContext")
         {
-            // The "name=WarehouseContext" corresponds to the connection string name in the configuration file
+            WarehouseRepository = new Repository<Warehouse>(this);
+            InventoryItemCategoryRepository = new Repository<InventoryItemCategory>(this);
+            InventoryItemRepository = new Repository<InventoryItem>(this);
+            InventoryTransactionRepository = new Repository<InventoryTransaction>(this);
         }
 
         // Optional: Customize model configuration in OnModelCreating method
