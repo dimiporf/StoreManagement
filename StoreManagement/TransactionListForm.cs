@@ -60,6 +60,27 @@ namespace StoreManagement
 
         }
 
+        private void transactionDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Ensure a valid row index
+            {
+                // Get the selected transaction
+                var selectedTransaction = transactionDataGrid.Rows[e.RowIndex].DataBoundItem as InventoryTransaction;
+
+                if (selectedTransaction != null)
+                {
+                    // Open the TransactionDetailForm in edit mode
+                    using (var form = new TransactionDetailForm(_context, selectedTransaction))
+                    {
+                        form.ShowDialog();
+                    }
+
+                    // Refresh the transactions list after closing the form
+                    LoadTransactions();
+                }
+            }
+        }
+
         private void LoadTransactions()
         {
             try

@@ -69,6 +69,7 @@ namespace StoreManagement
             transactionDataGrid.Name = "transactionDataGrid";
             transactionDataGrid.Size = new Size(945, 391);
             transactionDataGrid.TabIndex = 1;
+            transactionDataGrid.CellDoubleClick += transactionDataGrid_CellDoubleClick;
             // 
             // addNewTransactionBtn
             // 
