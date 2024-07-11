@@ -26,7 +26,14 @@ namespace StoreManagement
 
         private void addNewTransactionBtn_Click(object sender, EventArgs e)
         {
+            // Open the TransactionDetailForm in new transaction mode
+            using (var form = new TransactionDetailForm(_context))
+            {
+                form.ShowDialog();
+            }
 
+            // Refresh the transactions list after closing the form
+            LoadTransactions();
         }
 
         private void retrieveTransactionsBtn_Click(object sender, EventArgs e)
