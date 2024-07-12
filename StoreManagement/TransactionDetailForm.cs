@@ -48,8 +48,18 @@ namespace StoreManagement
                 new { TransactionTypeID = 2, Description = "Sale" }
             };
             transactionTypeComboBox.DataSource = transactionTypes;
-            transactionTypeComboBox.DisplayMember = "Description";
             transactionTypeComboBox.ValueMember = "TransactionTypeID";
+            transactionTypeComboBox.DisplayMember = "Description";
+            // Set the selected index of transactionTypeComboBox based on TransactionType value
+            if (_transaction.TransactionType == 1)
+            {
+                transactionTypeComboBox.SelectedIndex = 0; // Assuming index 0 corresponds to "Purchase"
+            }
+            else if (_transaction.TransactionType == 2)
+            {
+                transactionTypeComboBox.SelectedIndex = 1; // Assuming index 1 corresponds to "Sale"
+            }
+
 
             // Bind warehouses to the warehouse dropdown list
             warehouseComboBox.DataSource = _context.Warehouses.ToList();
@@ -77,6 +87,7 @@ namespace StoreManagement
 
             totalCostTextBox.ReadOnly = true; // Make total cost textbox read-only
             totalSalesTextBox.ReadOnly = true; // Make total sales textbox read-only
+
         }
 
         // Event handler for the Save button click
@@ -133,21 +144,26 @@ namespace StoreManagement
         // Method to update the visibility of fields based on transaction type
         private void UpdateFieldVisibility()
         {
-            if (transactionTypeComboBox.SelectedItem == null) // Ensure a transaction type is selected
+            if (transactionTypeComboBox.SelectedItem == null)
                 return;
 
-            // Determine if the transaction type is Purchase
-            bool isPurchase = (int)transactionTypeComboBox.SelectedValue == 1;
-            costItemTextBox.Visible = isPurchase; // Show cost field if Purchase
-            totalCostTextBox.Visible = isPurchase; // Show total cost field if Purchase
-            salePriceItemTextBox.Visible = !isPurchase; // Show sale price field if not Purchase
-            totalSalesTextBox.Visible = !isPurchase; // Show total sales field if not Purchase
+            int selectedValue = (int)transactionTypeComboBox.SelectedValue;
 
-            // Show or hide labels based on transaction type
-            costItemLabel.Visible = isPurchase;
-            totalCostLabel.Visible = isPurchase;
-            salePriceItemLabel.Visible = !isPurchase;
-            totalSalesLabel.Visible = !isPurchase;
+            // Display "Purchase" or "Sale" based on selectedValue
+            string transactionTypeDescription = selectedValue == 1 ? "Purchase" : (selectedValue == 2 ? "Sale" : string.Empty);
+
+            costItemTextBox.Visible = selectedValue == 1;
+            totalCostTextBox.Visible = selectedValue == 1;
+            salePriceItemTextBox.Visible = selectedValue == 2;
+            totalSalesTextBox.Visible = selectedValue == 2;
+
+            costItemLabel.Visible = selectedValue == 1;
+            totalCostLabel.Visible = selectedValue == 1;
+            salePriceItemLabel.Visible = selectedValue == 2;
+            totalSalesLabel.Visible = selectedValue == 2;
+
+            // Set labels and textboxes
+            transactionTypeComboBox.Text = transactionTypeDescription;
         }
 
         // Event handler for transaction type combo box selection change
