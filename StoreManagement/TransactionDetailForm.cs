@@ -41,9 +41,15 @@ namespace StoreManagement
         // Method to bind data to dropdown lists
         private void BindDropDowns()
         {
-            // Add transaction types to the dropdown list
-            transactionTypeComboBox.Items.Add("Purchase");
-            transactionTypeComboBox.Items.Add("Sale");
+            // Bind transaction types to the dropdown list
+            var transactionTypes = new[]
+            {
+                new { TransactionTypeID = 1, Description = "Purchase" },
+                new { TransactionTypeID = 2, Description = "Sale" }
+            };
+            transactionTypeComboBox.DataSource = transactionTypes;
+            transactionTypeComboBox.DisplayMember = "Description";
+            transactionTypeComboBox.ValueMember = "TransactionTypeID";
 
             // Bind warehouses to the warehouse dropdown list
             warehouseComboBox.DataSource = _context.Warehouses.ToList();
@@ -52,7 +58,7 @@ namespace StoreManagement
 
             // Bind inventory items to the inventory item dropdown list
             inventoryItemComboBox.DataSource = _context.InventoryItems.ToList();
-            inventoryItemComboBox.DisplayMember = "ItemName"; // Show the item name
+            inventoryItemComboBox.DisplayMember = "InventoryItemDescription"; // Show the item name
             inventoryItemComboBox.ValueMember = "InventoryItemID"; // Use the ID as the value
         }
 
@@ -60,7 +66,7 @@ namespace StoreManagement
         private void PopulateFormFields()
         {
             dateTimePickerDetail.Value = _transaction.TransactionDate; // Set the date
-            transactionTypeComboBox.SelectedItem = _transaction.TransactionType == 1 ? "Purchase" : "Sale"; // Set the transaction type
+            transactionTypeComboBox.SelectedValue = _transaction.TransactionType; // Set the transaction type
             warehouseComboBox.SelectedValue = _transaction.WarehouseID; // Set the selected warehouse
             inventoryItemComboBox.SelectedValue = _transaction.InventoryItemID; // Set the selected inventory item
             quantityTextBox.Text = _transaction.Qty.ToString(); // Set the quantity
@@ -68,6 +74,9 @@ namespace StoreManagement
             salePriceItemTextBox.Text = _transaction.SalePrice?.ToString() ?? string.Empty; // Set the sale price (if available)
             totalCostTextBox.Text = _transaction.TotalCost?.ToString() ?? string.Empty; // Set the total cost (if available)
             totalSalesTextBox.Text = _transaction.TotalSale?.ToString() ?? string.Empty; // Set the total sales (if available)
+
+            totalCostTextBox.ReadOnly = true; // Make total cost textbox read-only
+            totalSalesTextBox.ReadOnly = true; // Make total sales textbox read-only
         }
 
         // Event handler for the Save button click
@@ -77,7 +86,7 @@ namespace StoreManagement
             {
                 // Update the transaction details with the form data
                 _transaction.TransactionDate = dateTimePickerDetail.Value;
-                _transaction.TransactionType = transactionTypeComboBox.SelectedItem.ToString() == "Purchase" ? 1 : 2;
+                _transaction.TransactionType = (int)transactionTypeComboBox.SelectedValue; // Use the selected value
                 _transaction.WarehouseID = (int)warehouseComboBox.SelectedValue;
                 _transaction.InventoryItemID = (int)inventoryItemComboBox.SelectedValue;
                 _transaction.Qty = int.Parse(quantityTextBox.Text);
@@ -128,7 +137,7 @@ namespace StoreManagement
                 return;
 
             // Determine if the transaction type is Purchase
-            bool isPurchase = transactionTypeComboBox.SelectedItem.ToString() == "Purchase";
+            bool isPurchase = (int)transactionTypeComboBox.SelectedValue == 1;
             costItemTextBox.Visible = isPurchase; // Show cost field if Purchase
             totalCostTextBox.Visible = isPurchase; // Show total cost field if Purchase
             salePriceItemTextBox.Visible = !isPurchase; // Show sale price field if not Purchase

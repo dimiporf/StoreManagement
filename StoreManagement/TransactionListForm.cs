@@ -98,6 +98,7 @@ namespace StoreManagement
                 TransactionID.DataPropertyName = "TransactionID";
                 TransactionDate.DataPropertyName = "TransactionDate";
                 TransactionType.DataPropertyName = "TransactionType";
+                
                 WarehouseID.DataPropertyName = "WarehouseID";
                 InventoryItemID.DataPropertyName = "InventoryItemID";
                 Qty.DataPropertyName = "Qty";
