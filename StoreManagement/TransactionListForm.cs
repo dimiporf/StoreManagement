@@ -148,6 +148,9 @@ namespace StoreManagement
             transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "SalePrice", DataPropertyName = "SalePrice", HeaderText = "Sale Price" });
             transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalCost", DataPropertyName = "TotalCost", HeaderText = "Total Cost" });
             transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalSale", DataPropertyName = "TotalSale", HeaderText = "Total Sale" });
+
+            // Hide the TransactionID column
+            transactionDataGrid.Columns["TransactionID"].Visible = false;
         }
     }
 }
