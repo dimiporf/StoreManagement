@@ -7,7 +7,7 @@ namespace StoreBackend.Repositories
     public interface IRepository<T> where T : class
     {
         // Retrieves all entities of type T
-        IEnumerable<T> GetAll();
+        IQueryable<T> GetAll();
 
         // Retrieves a single entity of type T by its ID
         T GetById(int id);

@@ -22,9 +22,9 @@ namespace StoreBackend.Repositories
         }
 
         // Retrieves all entities of type T
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-               return _dbSet.ToList();
+               return _dbSet.AsQueryable();
         }
 
         // Retrieves a single entity of type T by its ID
