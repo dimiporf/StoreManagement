@@ -1,76 +1,81 @@
-﻿using StoreBackend.Data;
-using StoreBackend.Models;
-using StoreBackend.Repositories;
-using System;
-using System.Linq;
-using System.Windows.Forms;
+﻿using StoreBackend.Data; // Importing the data context
+using StoreBackend.Models; // Importing the models
+using StoreBackend.Repositories; // Importing the repositories
+using System; // Importing the base system library
+using System.Linq; // Importing LINQ for data queries
+using System.Windows.Forms; // Importing the Windows Forms library
 
 namespace StoreManagement
 {
     public partial class TransactionDetailForm : Form
     {
-        private readonly WarehouseContext _context;
-        private readonly IRepository<InventoryTransaction> _transactionRepository;
-        private InventoryTransaction _transaction;
-        private bool _isNewTransaction;
+        private readonly WarehouseContext _context; // Data context for accessing the database
+        private readonly IRepository<InventoryTransaction> _transactionRepository; // Repository for managing inventory transactions
+        private InventoryTransaction _transaction; // The current transaction being managed
+        private bool _isNewTransaction; // Flag to determine if the transaction is new
 
+        // Constructor for the form
         public TransactionDetailForm(WarehouseContext context, InventoryTransaction transaction = null)
         {
-            InitializeComponent();
-            _context = context;
-            _transactionRepository = new Repository<InventoryTransaction>(_context);
-            _transaction = transaction;
+            InitializeComponent(); // Initialize form components
+            _context = context; // Assign the data context
+            _transactionRepository = new Repository<InventoryTransaction>(_context); // Initialize the repository
+            _transaction = transaction; // Assign the transaction
 
-            if (_transaction == null)
+            if (_transaction == null) // If no transaction is passed, create a new one
             {
                 _transaction = new InventoryTransaction();
-                _isNewTransaction = true;
+                _isNewTransaction = true; // Mark this as a new transaction
             }
-            else
+            else // If a transaction is passed, mark it as an existing transaction
             {
                 _isNewTransaction = false;
-                PopulateFormFields();
+                PopulateFormFields(); // Populate the form with the existing transaction details
             }
 
-            BindDropDowns();
-            UpdateFieldVisibility();
-            transactionTypeComboBox.SelectedIndexChanged += TransactionTypeComboBox_SelectedIndexChanged;
+            BindDropDowns(); // Bind data to dropdown lists
+            UpdateFieldVisibility(); // Update the visibility of certain fields based on transaction type
+            transactionTypeComboBox.SelectedIndexChanged += TransactionTypeComboBox_SelectedIndexChanged; // Add event handler for transaction type change
         }
 
+        // Method to bind data to dropdown lists
         private void BindDropDowns()
         {
-            // Populate transaction type dropdown
+            // Add transaction types to the dropdown list
             transactionTypeComboBox.Items.Add("Purchase");
             transactionTypeComboBox.Items.Add("Sale");
 
-            // Populate warehouse dropdown with descriptions
+            // Bind warehouses to the warehouse dropdown list
             warehouseComboBox.DataSource = _context.Warehouses.ToList();
-            warehouseComboBox.DisplayMember = "Description";
-            warehouseComboBox.ValueMember = "WarehouseID";
+            warehouseComboBox.DisplayMember = "WarehouseDescription"; // Show the description
+            warehouseComboBox.ValueMember = "WarehouseID"; // Use the ID as the value
 
-            // Populate inventory item dropdown
+            // Bind inventory items to the inventory item dropdown list
             inventoryItemComboBox.DataSource = _context.InventoryItems.ToList();
-            inventoryItemComboBox.DisplayMember = "ItemName";
-            inventoryItemComboBox.ValueMember = "InventoryItemID";
+            inventoryItemComboBox.DisplayMember = "ItemName"; // Show the item name
+            inventoryItemComboBox.ValueMember = "InventoryItemID"; // Use the ID as the value
         }
 
+        // Method to populate the form fields with transaction data
         private void PopulateFormFields()
         {
-            dateTimePickerDetail.Value = _transaction.TransactionDate;
-            transactionTypeComboBox.SelectedItem = _transaction.TransactionType == 1 ? "Purchase" : "Sale";
-            warehouseComboBox.SelectedValue = _transaction.WarehouseID;
-            inventoryItemComboBox.SelectedValue = _transaction.InventoryItemID;
-            quantityTextBox.Text = _transaction.Qty.ToString();
-            costItemTextBox.Text = _transaction.Cost?.ToString() ?? string.Empty;
-            salePriceItemTextBox.Text = _transaction.SalePrice?.ToString() ?? string.Empty;
-            totalCostTextBox.Text = _transaction.TotalCost?.ToString() ?? string.Empty;
-            totalSalesTextBox.Text = _transaction.TotalSale?.ToString() ?? string.Empty;
+            dateTimePickerDetail.Value = _transaction.TransactionDate; // Set the date
+            transactionTypeComboBox.SelectedItem = _transaction.TransactionType == 1 ? "Purchase" : "Sale"; // Set the transaction type
+            warehouseComboBox.SelectedValue = _transaction.WarehouseID; // Set the selected warehouse
+            inventoryItemComboBox.SelectedValue = _transaction.InventoryItemID; // Set the selected inventory item
+            quantityTextBox.Text = _transaction.Qty.ToString(); // Set the quantity
+            costItemTextBox.Text = _transaction.Cost?.ToString() ?? string.Empty; // Set the cost (if available)
+            salePriceItemTextBox.Text = _transaction.SalePrice?.ToString() ?? string.Empty; // Set the sale price (if available)
+            totalCostTextBox.Text = _transaction.TotalCost?.ToString() ?? string.Empty; // Set the total cost (if available)
+            totalSalesTextBox.Text = _transaction.TotalSale?.ToString() ?? string.Empty; // Set the total sales (if available)
         }
 
+        // Event handler for the Save button click
         private void SaveButton_Click(object sender, EventArgs e)
         {
             try
             {
+                // Update the transaction details with the form data
                 _transaction.TransactionDate = dateTimePickerDetail.Value;
                 _transaction.TransactionType = transactionTypeComboBox.SelectedItem.ToString() == "Purchase" ? 1 : 2;
                 _transaction.WarehouseID = (int)warehouseComboBox.SelectedValue;
@@ -79,6 +84,7 @@ namespace StoreManagement
                 _transaction.Cost = decimal.TryParse(costItemTextBox.Text, out decimal cost) ? cost : (decimal?)null;
                 _transaction.SalePrice = decimal.TryParse(salePriceItemTextBox.Text, out decimal salePrice) ? salePrice : (decimal?)null;
 
+                // Insert or update the transaction in the database
                 if (_isNewTransaction)
                 {
                     _transactionRepository.Insert(_transaction);
@@ -88,52 +94,57 @@ namespace StoreManagement
                     _transactionRepository.Update(_transaction);
                 }
 
-                _transactionRepository.Save();
-                this.Close();
+                _transactionRepository.Save(); // Save the changes to the database
+                this.Close(); // Close the form
             }
-            catch (Exception ex)
+            catch (Exception ex) // Handle any exceptions that occur during the save operation
             {
                 MessageBox.Show($"Error saving transaction: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // Event handler for the Delete button click
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (!_isNewTransaction)
+            if (!_isNewTransaction) // Only allow deletion if the transaction is not new
             {
                 try
                 {
-                    _transactionRepository.Delete(_transaction.TransactionID);
-                    _transactionRepository.Save();
+                    _transactionRepository.Delete(_transaction.TransactionID); // Delete the transaction from the database
+                    _transactionRepository.Save(); // Save the changes to the database
                 }
-                catch (Exception ex)
+                catch (Exception ex) // Handle any exceptions that occur during the delete operation
                 {
                     MessageBox.Show($"Error deleting transaction: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            this.Close();
+            this.Close(); // Close the form
         }
 
+        // Method to update the visibility of fields based on transaction type
         private void UpdateFieldVisibility()
         {
-            if (transactionTypeComboBox.SelectedItem == null)
+            if (transactionTypeComboBox.SelectedItem == null) // Ensure a transaction type is selected
                 return;
 
+            // Determine if the transaction type is Purchase
             bool isPurchase = transactionTypeComboBox.SelectedItem.ToString() == "Purchase";
-            costItemTextBox.Visible = isPurchase;
-            totalCostTextBox.Visible = isPurchase;
-            salePriceItemTextBox.Visible = !isPurchase;
-            totalSalesTextBox.Visible = !isPurchase;
+            costItemTextBox.Visible = isPurchase; // Show cost field if Purchase
+            totalCostTextBox.Visible = isPurchase; // Show total cost field if Purchase
+            salePriceItemTextBox.Visible = !isPurchase; // Show sale price field if not Purchase
+            totalSalesTextBox.Visible = !isPurchase; // Show total sales field if not Purchase
 
+            // Show or hide labels based on transaction type
             costItemLabel.Visible = isPurchase;
             totalCostLabel.Visible = isPurchase;
             salePriceItemLabel.Visible = !isPurchase;
             totalSalesLabel.Visible = !isPurchase;
         }
 
+        // Event handler for transaction type combo box selection change
         private void TransactionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateFieldVisibility();
+            UpdateFieldVisibility(); // Update field visibility when transaction type changes
         }
     }
 }

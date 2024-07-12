@@ -154,7 +154,7 @@
             transactionTypeComboBox.Name = "transactionTypeComboBox";
             transactionTypeComboBox.Size = new Size(200, 23);
             transactionTypeComboBox.TabIndex = 10;
-            transactionTypeComboBox.SelectedIndexChanged += new EventHandler(TransactionTypeComboBox_SelectedIndexChanged);
+            transactionTypeComboBox.SelectedIndexChanged += TransactionTypeComboBox_SelectedIndexChanged;
             // 
             // warehouseComboBox
             // 
@@ -215,7 +215,7 @@
             saveButton.TabIndex = 18;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
-            saveButton.Click += new EventHandler(SaveButton_Click);
+            saveButton.Click += SaveButton_Click;
             // 
             // deleteButton
             // 
@@ -225,7 +225,7 @@
             deleteButton.TabIndex = 19;
             deleteButton.Text = "Delete";
             deleteButton.UseVisualStyleBackColor = true;
-            deleteButton.Click += new EventHandler(DeleteButton_Click);
+            deleteButton.Click += DeleteButton_Click;
             // 
             // TransactionDetailForm
             // 
