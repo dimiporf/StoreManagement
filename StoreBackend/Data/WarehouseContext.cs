@@ -16,12 +16,15 @@ namespace StoreBackend.Data
         public DbSet<InventoryItemCategory> InventoryItemCategories { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
+        public DbSet<InventoryStock> InventoryStocks { get; set; }
 
         // Repository injection for each entity
         public IRepository<Warehouse> WarehouseRepository { get; set; }
         public IRepository<InventoryItemCategory> InventoryItemCategoryRepository { get; set; }
         public IRepository<InventoryItem> InventoryItemRepository { get; set; }
         public IRepository<InventoryTransaction> InventoryTransactionRepository { get; set; }
+        public IRepository<InventoryStock> InventoryStockRepository { get; set; }
+
 
         // Constructor to initialize DbContext with connection string name
         public WarehouseContext() : base("name=WarehouseContext")
@@ -30,7 +33,10 @@ namespace StoreBackend.Data
             InventoryItemCategoryRepository = new Repository<InventoryItemCategory>(this);
             InventoryItemRepository = new Repository<InventoryItem>(this);
             InventoryTransactionRepository = new Repository<InventoryTransaction>(this);
+            InventoryStockRepository = new Repository<InventoryStock>(this);
         }
+
+        
 
         // Optional: Customize model configuration in OnModelCreating method
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

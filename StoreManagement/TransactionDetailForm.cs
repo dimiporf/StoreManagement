@@ -1,6 +1,7 @@
 ﻿using StoreBackend.Data; // Importing the data context
 using StoreBackend.Models; // Importing the models
 using StoreBackend.Repositories; // Importing the repositories
+using StoreBackend.Services;
 using System; // Importing the base system library
 using System.Linq; // Importing LINQ for data queries
 using System.Windows.Forms; // Importing the Windows Forms library
@@ -11,15 +12,20 @@ namespace StoreManagement
     {
         private readonly WarehouseContext _context; // Data context for accessing the database
         private readonly IRepository<InventoryTransaction> _transactionRepository; // Repository for managing inventory transactions
+        private readonly IRepository<InventoryStock> _stockRepository; // Repository for managing inventory stocks
+        private readonly InventoryService _inventoryService;
         private InventoryTransaction _transaction; // The current transaction being managed
         private bool _isNewTransaction; // Flag to determine if the transaction is new
+
 
         // Constructor for the form
         public TransactionDetailForm(WarehouseContext context, InventoryTransaction transaction = null)
         {
             InitializeComponent(); // Initialize form components
             _context = context; // Assign the data context
-            _transactionRepository = new Repository<InventoryTransaction>(_context); // Initialize the repository
+            _transactionRepository = new Repository<InventoryTransaction>(_context); // Initialize the transaction repository
+            _stockRepository = new Repository<InventoryStock>(_context); // Initialize the stock repository
+            _inventoryService = new InventoryService(_transactionRepository, _stockRepository); // Initialize the inventory service
             _transaction = transaction; // Assign the transaction
 
             if (_transaction == null) // If no transaction is passed, create a new one
@@ -95,29 +101,27 @@ namespace StoreManagement
         {
             try
             {
-                // Update the transaction details with the form data
+                // Update transaction details
                 _transaction.TransactionDate = dateTimePickerDetail.Value;
-                _transaction.TransactionType = (int)transactionTypeComboBox.SelectedValue; // Use the selected value
+                _transaction.TransactionType = (int)transactionTypeComboBox.SelectedValue;
                 _transaction.WarehouseID = (int)warehouseComboBox.SelectedValue;
                 _transaction.InventoryItemID = (int)inventoryItemComboBox.SelectedValue;
                 _transaction.Qty = int.Parse(quantityTextBox.Text);
                 _transaction.Cost = decimal.TryParse(costItemTextBox.Text, out decimal cost) ? cost : (decimal?)null;
                 _transaction.SalePrice = decimal.TryParse(salePriceItemTextBox.Text, out decimal salePrice) ? salePrice : (decimal?)null;
 
-                // Insert or update the transaction in the database
                 if (_isNewTransaction)
                 {
-                    _transactionRepository.Insert(_transaction);
+                    _inventoryService.AddTransaction(_transaction);
                 }
                 else
                 {
-                    _transactionRepository.Update(_transaction);
+                    _inventoryService.UpdateTransaction(_transaction);
                 }
 
-                _transactionRepository.Save(); // Save the changes to the database
-                this.Close(); // Close the form
+                this.Close(); // Close the form after successful save
             }
-            catch (Exception ex) // Handle any exceptions that occur during the save operation
+            catch (Exception ex)
             {
                 MessageBox.Show($"Error saving transaction: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -126,21 +130,21 @@ namespace StoreManagement
         // Event handler for the Delete button click
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (!_isNewTransaction) // Only allow deletion if the transaction is not new
+            if (!_isNewTransaction)
             {
                 try
                 {
-                    _transactionRepository.Delete(_transaction.TransactionID); // Delete the transaction from the database
-                    _transactionRepository.Save(); // Save the changes to the database
+                    _inventoryService.DeleteTransaction(_transaction.TransactionID);
+                    this.Close(); // Close the form after successful delete
                 }
-                catch (Exception ex) // Handle any exceptions that occur during the delete operation
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Error deleting transaction: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            this.Close(); // Close the form
         }
 
+        
         // Method to update the visibility of fields based on transaction type
         private void UpdateFieldVisibility()
         {

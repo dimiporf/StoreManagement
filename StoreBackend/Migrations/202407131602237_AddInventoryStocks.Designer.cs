@@ -7,13 +7,13 @@ namespace StoreBackend.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.5.1")]
-    public sealed partial class AddInventoryStock : IMigrationMetadata
+    public sealed partial class AddInventoryStocks : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddInventoryStock));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddInventoryStocks));
         
         string IMigrationMetadata.Id
         {
-            get { return "202407130904217_AddInventoryStock"; }
+            get { return "202407131602237_AddInventoryStocks"; }
         }
         
         string IMigrationMetadata.Source
