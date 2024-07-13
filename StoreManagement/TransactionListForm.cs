@@ -135,22 +135,50 @@ namespace StoreManagement
 
         private void ConfigureDataGridViewColumns()
         {
+            // Disable automatic column generation to manually define columns
             transactionDataGrid.AutoGenerateColumns = false;
+
+            // Clear any existing columns to start fresh
             transactionDataGrid.Columns.Clear();
 
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TransactionID", DataPropertyName = "TransactionID", HeaderText = "Transaction ID" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TransactionDate", DataPropertyName = "TransactionDate", HeaderText = "Date" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TransactionTypeDescription", DataPropertyName = "TransactionTypeDescription", HeaderText = "Transaction Type" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "WarehouseDescription", DataPropertyName = "WarehouseDescription", HeaderText = "Warehouse" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "InventoryItemDescription", DataPropertyName = "InventoryItemDescription", HeaderText = "Inventory Item" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qty", DataPropertyName = "Qty", HeaderText = "Quantity" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Cost", DataPropertyName = "Cost", HeaderText = "Cost" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "SalePrice", DataPropertyName = "SalePrice", HeaderText = "Sale Price" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalCost", DataPropertyName = "TotalCost", HeaderText = "Total Cost" });
-            transactionDataGrid.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalSale", DataPropertyName = "TotalSale", HeaderText = "Total Sale" });
+            // Define an array of anonymous objects to hold column details
+            var columns = new[]
+            {
+        // Each object represents a column and includes:
+        // - Name: The name of the column
+        // - DataPropertyName: The property name of the data source bound to this column
+        // - HeaderText: The text displayed in the column header
+        // - Visible: Boolean to determine if the column should be visible
+        new { Name = "TransactionID", DataPropertyName = "TransactionID", HeaderText = "Transaction ID", Visible = false },
+        new { Name = "TransactionDate", DataPropertyName = "TransactionDate", HeaderText = "Date", Visible = true },
+        new { Name = "TransactionTypeDescription", DataPropertyName = "TransactionTypeDescription", HeaderText = "Transaction Type", Visible = true },
+        new { Name = "WarehouseDescription", DataPropertyName = "WarehouseDescription", HeaderText = "Warehouse", Visible = true },
+        new { Name = "InventoryItemDescription", DataPropertyName = "InventoryItemDescription", HeaderText = "Inventory Item", Visible = true },
+        new { Name = "Qty", DataPropertyName = "Qty", HeaderText = "Quantity", Visible = true },
+        new { Name = "Cost", DataPropertyName = "Cost", HeaderText = "Cost", Visible = true },
+        new { Name = "SalePrice", DataPropertyName = "SalePrice", HeaderText = "Sale Price", Visible = true },
+        new { Name = "TotalCost", DataPropertyName = "TotalCost", HeaderText = "Total Cost", Visible = true },
+        new { Name = "TotalSale", DataPropertyName = "TotalSale", HeaderText = "Total Sale", Visible = true }
+    };
 
-            // Hide the TransactionID column
-            transactionDataGrid.Columns["TransactionID"].Visible = false;
+            // Loop through the array of column definitions
+            foreach (var column in columns)
+            {
+                // Create a new DataGridViewTextBoxColumn for each column definition
+                var gridColumn = new DataGridViewTextBoxColumn
+                {
+                    Name = column.Name, // Set the column name
+                    DataPropertyName = column.DataPropertyName, // Set the data property name
+                    HeaderText = column.HeaderText // Set the header text
+                };
+
+                // Add the column to the DataGridView
+                transactionDataGrid.Columns.Add(gridColumn);
+
+                // Set the visibility of the column based on the 'Visible' property
+                transactionDataGrid.Columns[column.Name].Visible = column.Visible;
+            }
         }
+
     }
 }
