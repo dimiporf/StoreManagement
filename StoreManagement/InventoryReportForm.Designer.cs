@@ -28,103 +28,102 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dateFromPicker = new System.Windows.Forms.DateTimePicker();
-            this.dateToPicker = new System.Windows.Forms.DateTimePicker();
-            this.warehouseComboBox = new System.Windows.Forms.ComboBox();
-            this.dateFromLabel = new System.Windows.Forms.Label();
-            this.dateToLabel = new System.Windows.Forms.Label();
-            this.warehouseLabel = new System.Windows.Forms.Label();
-            this.dataGridViewReport = new System.Windows.Forms.DataGridView();
-            this.generateReportButton = new System.Windows.Forms.Button(); // Added generateReportButton
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReport)).BeginInit();
-            this.SuspendLayout();
+            dateFromPicker = new DateTimePicker();
+            dateToPicker = new DateTimePicker();
+            warehouseComboBox = new ComboBox();
+            dateFromLabel = new Label();
+            dateToLabel = new Label();
+            warehouseLabel = new Label();
+            dataGridViewReport = new DataGridView();
+            generateReportButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewReport).BeginInit();
+            SuspendLayout();
             // 
             // dateFromPicker
             // 
-            this.dateFromPicker.Location = new System.Drawing.Point(12, 44);
-            this.dateFromPicker.Name = "dateFromPicker";
-            this.dateFromPicker.Size = new System.Drawing.Size(225, 23);
-            this.dateFromPicker.TabIndex = 0;
+            dateFromPicker.Location = new Point(12, 44);
+            dateFromPicker.Name = "dateFromPicker";
+            dateFromPicker.Size = new Size(225, 23);
+            dateFromPicker.TabIndex = 0;
             // 
             // dateToPicker
             // 
-            this.dateToPicker.Location = new System.Drawing.Point(12, 111);
-            this.dateToPicker.Name = "dateToPicker";
-            this.dateToPicker.Size = new System.Drawing.Size(225, 23);
-            this.dateToPicker.TabIndex = 1;
+            dateToPicker.Location = new Point(12, 111);
+            dateToPicker.Name = "dateToPicker";
+            dateToPicker.Size = new Size(225, 23);
+            dateToPicker.TabIndex = 1;
             // 
             // warehouseComboBox
             // 
-            this.warehouseComboBox.FormattingEnabled = true;
-            this.warehouseComboBox.Location = new System.Drawing.Point(12, 184);
-            this.warehouseComboBox.Name = "warehouseComboBox";
-            this.warehouseComboBox.Size = new System.Drawing.Size(225, 23);
-            this.warehouseComboBox.TabIndex = 2;
+            warehouseComboBox.FormattingEnabled = true;
+            warehouseComboBox.Location = new Point(12, 184);
+            warehouseComboBox.Name = "warehouseComboBox";
+            warehouseComboBox.Size = new Size(225, 23);
+            warehouseComboBox.TabIndex = 2;
             // 
             // dateFromLabel
             // 
-            this.dateFromLabel.AutoSize = true;
-            this.dateFromLabel.Location = new System.Drawing.Point(12, 26);
-            this.dateFromLabel.Name = "dateFromLabel";
-            this.dateFromLabel.Size = new System.Drawing.Size(35, 15);
-            this.dateFromLabel.TabIndex = 3;
-            this.dateFromLabel.Text = "From";
+            dateFromLabel.AutoSize = true;
+            dateFromLabel.Location = new Point(12, 26);
+            dateFromLabel.Name = "dateFromLabel";
+            dateFromLabel.Size = new Size(35, 15);
+            dateFromLabel.TabIndex = 3;
+            dateFromLabel.Text = "From";
             // 
             // dateToLabel
             // 
-            this.dateToLabel.AutoSize = true;
-            this.dateToLabel.Location = new System.Drawing.Point(12, 93);
-            this.dateToLabel.Name = "dateToLabel";
-            this.dateToLabel.Size = new System.Drawing.Size(19, 15);
-            this.dateToLabel.TabIndex = 4;
-            this.dateToLabel.Text = "To";
+            dateToLabel.AutoSize = true;
+            dateToLabel.Location = new Point(12, 93);
+            dateToLabel.Name = "dateToLabel";
+            dateToLabel.Size = new Size(19, 15);
+            dateToLabel.TabIndex = 4;
+            dateToLabel.Text = "To";
             // 
             // warehouseLabel
             // 
-            this.warehouseLabel.AutoSize = true;
-            this.warehouseLabel.Location = new System.Drawing.Point(12, 166);
-            this.warehouseLabel.Name = "warehouseLabel";
-            this.warehouseLabel.Size = new System.Drawing.Size(66, 15);
-            this.warehouseLabel.TabIndex = 5;
-            this.warehouseLabel.Text = "Warehouse";
+            warehouseLabel.AutoSize = true;
+            warehouseLabel.Location = new Point(12, 166);
+            warehouseLabel.Name = "warehouseLabel";
+            warehouseLabel.Size = new Size(66, 15);
+            warehouseLabel.TabIndex = 5;
+            warehouseLabel.Text = "Warehouse";
             // 
             // dataGridViewReport
             // 
-            this.dataGridViewReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewReport.Location = new System.Drawing.Point(256, 26);
-            this.dataGridViewReport.Name = "dataGridViewReport";
-            this.dataGridViewReport.Size = new System.Drawing.Size(743, 447);
-            this.dataGridViewReport.TabIndex = 6;
+            dataGridViewReport.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewReport.Location = new Point(256, 26);
+            dataGridViewReport.Name = "dataGridViewReport";
+            dataGridViewReport.Size = new Size(683, 447);
+            dataGridViewReport.TabIndex = 6;
             // 
             // generateReportButton
             // 
-            this.generateReportButton.Location = new System.Drawing.Point(12, 240); // Adjusted position
-            this.generateReportButton.Name = "generateReportButton";
-            this.generateReportButton.Size = new System.Drawing.Size(225, 30);
-            this.generateReportButton.TabIndex = 7;
-            this.generateReportButton.Text = "Generate Report";
-            this.generateReportButton.UseVisualStyleBackColor = true;
-            this.generateReportButton.Click += new System.EventHandler(this.generateReportButton_Click); // Attach event handler
+            generateReportButton.Location = new Point(12, 240);
+            generateReportButton.Name = "generateReportButton";
+            generateReportButton.Size = new Size(225, 30);
+            generateReportButton.TabIndex = 7;
+            generateReportButton.Text = "Generate Report";
+            generateReportButton.UseVisualStyleBackColor = true;
+            generateReportButton.Click += generateReportButton_Click;
             // 
             // InventoryReportForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1011, 485);
-            this.Controls.Add(this.generateReportButton); // Add generateReportButton to form
-            this.Controls.Add(this.dataGridViewReport);
-            this.Controls.Add(this.warehouseLabel);
-            this.Controls.Add(this.dateToLabel);
-            this.Controls.Add(this.dateFromLabel);
-            this.Controls.Add(this.warehouseComboBox);
-            this.Controls.Add(this.dateToPicker);
-            this.Controls.Add(this.dateFromPicker);
-            this.Name = "InventoryReportForm";
-            this.Text = "InventoryReportForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReport)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(949, 485);
+            Controls.Add(generateReportButton);
+            Controls.Add(dataGridViewReport);
+            Controls.Add(warehouseLabel);
+            Controls.Add(dateToLabel);
+            Controls.Add(dateFromLabel);
+            Controls.Add(warehouseComboBox);
+            Controls.Add(dateToPicker);
+            Controls.Add(dateFromPicker);
+            Name = "InventoryReportForm";
+            Text = "InventoryReportForm";
+            ((System.ComponentModel.ISupportInitialize)dataGridViewReport).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

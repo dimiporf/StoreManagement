@@ -18,27 +18,33 @@ namespace StoreManagement
         public InventoryReportForm()
         {
             InitializeComponent();
+
+            // Initialize the database context and repositories
             _context = new WarehouseContext();
             _transactionRepository = new Repository<InventoryTransaction>(_context);
             _stockRepository = new Repository<InventoryStock>(_context);
 
+            // Bind the warehouse combobox with warehouse data
             BindWarehouses();
         }
 
         private void BindWarehouses()
         {
+            // Retrieve all warehouses from the database and bind them to the combobox
             var warehouses = _context.Warehouses.ToList();
             warehouseComboBox.DataSource = warehouses;
-            warehouseComboBox.DisplayMember = "WarehouseDescription";
-            warehouseComboBox.ValueMember = "WarehouseID";
+            warehouseComboBox.DisplayMember = "WarehouseDescription"; // Display the warehouse description
+            warehouseComboBox.ValueMember = "WarehouseID"; // Use the warehouse ID as the value
         }
 
         private void generateReportButton_Click(object sender, EventArgs e)
         {
+            // Retrieve selected warehouse ID, from date, and to date from the UI controls
             var selectedWarehouseId = (int)warehouseComboBox.SelectedValue;
             var fromDate = dateFromPicker.Value.Date;
-            var toDate = dateToPicker.Value.Date;
+            var toDate = dateToPicker.Value.Date.AddDays(1).AddTicks(-1); // Set toDate to end of day
 
+            // Load the inventory report based on selected criteria
             LoadInventoryReport(selectedWarehouseId, fromDate, toDate);
         }
 
@@ -46,13 +52,16 @@ namespace StoreManagement
         {
             try
             {
+                // Retrieve all inventory transactions for the selected warehouse within the specified date range
                 var inventoryTransactions = _transactionRepository.GetAll()
                     .Where(t => t.WarehouseID == warehouseId && t.TransactionDate >= fromDate && t.TransactionDate <= toDate)
-                    .Include("InventoryItem")
+                    .Include("InventoryItem") // Include related InventoryItem entity for each transaction
                     .ToList();
 
+                // Prepare a list to store dynamic objects for the report data
                 var reportData = new List<dynamic>();
 
+                // Group inventory transactions by InventoryItemID to calculate aggregates
                 var inventoryItems = inventoryTransactions
                     .GroupBy(t => t.InventoryItemID)
                     .Select(g => new
@@ -65,6 +74,7 @@ namespace StoreManagement
                     })
                     .ToList();
 
+                // Calculate and prepare report data for each inventory item
                 foreach (var item in inventoryItems)
                 {
                     var balanceAtEnd = item.BalanceAtStart + item.IncomingQuantity - item.OrderQuantity;
@@ -79,7 +89,10 @@ namespace StoreManagement
                     });
                 }
 
+                // Bind the report data to the DataGridView
                 dataGridViewReport.DataSource = reportData;
+
+                // Configure DataGridView columns based on the report data
                 ConfigureDataGridViewColumns();
             }
             catch (Exception ex)
@@ -90,23 +103,28 @@ namespace StoreManagement
 
         private int CalculateBalanceAtStart(int inventoryItemId, int warehouseId, DateTime fromDate)
         {
+            // Calculate the balance of the inventory item at the start of the specified period
             var stockBeforePeriod = _transactionRepository.GetAll()
                 .Where(t => t.InventoryItemID == inventoryItemId && t.WarehouseID == warehouseId && t.TransactionDate < fromDate)
                 .GroupBy(t => t.InventoryItemID)
                 .Select(g => new
                 {
+                    // Sum the quantities of incoming (TransactionType == 1) and subtract outgoing (TransactionType == 2) transactions
                     Balance = g.Where(t => t.TransactionType == 1).Sum(t => t.Qty) - g.Where(t => t.TransactionType == 2).Sum(t => t.Qty)
                 })
                 .FirstOrDefault();
 
+            // Return the calculated balance or 0 if no data found
             return stockBeforePeriod?.Balance ?? 0;
         }
 
         private void ConfigureDataGridViewColumns()
         {
+            // Configure DataGridView columns for the inventory report
             dataGridViewReport.AutoGenerateColumns = false;
             dataGridViewReport.Columns.Clear();
 
+            // Define columns for the DataGridView
             var columns = new[]
             {
                 new { Name = "InventoryItemID", DataPropertyName = "InventoryItemID", HeaderText = "Item ID", Visible = true },
@@ -117,6 +135,7 @@ namespace StoreManagement
                 new { Name = "BalanceAtEnd", DataPropertyName = "BalanceAtEnd", HeaderText = "Balance at End", Visible = true }
             };
 
+            // Add columns to the DataGridView based on the defined properties
             foreach (var column in columns)
             {
                 var gridColumn = new DataGridViewTextBoxColumn
