@@ -135,6 +135,7 @@ namespace StoreManagement
                 var totalCost = transactionsToShow.Sum(t => t.TotalCost);
                 var totalSale = transactionsToShow.Sum(t => t.TotalSale);
 
+                // Mock transaction to hold the sum values of TotalCost and TotalSale
                 transactionsToShow.Add(new
                 {
                     TransactionID = 0, // Set to 0 or any unique value for totals row

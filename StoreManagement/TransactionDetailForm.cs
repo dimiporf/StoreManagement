@@ -121,11 +121,20 @@ namespace StoreManagement
 
                 this.Close(); // Close the form after successful save
             }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid quantity or cost/sale price format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error saving transaction: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // Event handler for the Delete button click
         private void DeleteButton_Click(object sender, EventArgs e)
