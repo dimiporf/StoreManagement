@@ -44,6 +44,7 @@ namespace StoreManagement
             DateTime fromDate = dateFromPicker.Value.Date;
             DateTime toDate = dateToPicker.Value.Date.AddDays(1).AddTicks(-1); // Set toDate to end of day
             
+
             // Load transactions within the specified date range
             LoadTransactions(fromDate, toDate);
         }
@@ -92,6 +93,7 @@ namespace StoreManagement
             LoadTransactions();
         }
 
+        // This method sets a default date range from DateTime.MinValue to DateTime.MaxValue.
         protected void LoadTransactions()
         {
             DateTime fromDate = DateTime.MinValue;
@@ -99,6 +101,8 @@ namespace StoreManagement
             LoadTransactions(fromDate, toDate);
         }
 
+        // Loads transactions from the database within the specified date range and binds them to the DataGridView. 
+        // Calculates and displays totals for Total Cost and Total Sale at the bottom of the DataGridView.
         protected void LoadTransactions(DateTime fromDate, DateTime toDate)
         {
             try
@@ -107,28 +111,47 @@ namespace StoreManagement
                 var transactionsQuery = _transactionRepository.GetAll()
                     .Include("Warehouse")
                     .Include("InventoryItem")
-                    .Where(t => t.TransactionDate >= fromDate && t.TransactionDate <= toDate);
+                    .Where(t => t.TransactionDate >= fromDate && t.TransactionDate <= toDate)
+                    .ToList(); // Materialize the query to avoid multiple enumeration
 
                 // Project into anonymous type for DataGridView binding
-                var transactionsToShow = transactionsQuery.ToList()
+                var transactionsToShow = transactionsQuery
                     .Select(t => new
                     {
                         t.TransactionID,
-                        t.TransactionDate,
+                        TransactionDate = t.TransactionDate.ToString(), // Convert to string if necessary
                         TransactionTypeDescription = t.TransactionType == 1 ? "Purchase" : "Sale",
                         WarehouseDescription = t.Warehouse.WarehouseDescription,
                         InventoryItemDescription = t.InventoryItem.InventoryItemDescription,
-                        t.Qty,
-                        t.Cost,
-                        t.SalePrice,
-                        TotalCost = t.TransactionType == 1 ? t.Qty * t.Cost : (decimal?)null,
-                        TotalSale = t.TransactionType == 2 ? t.Qty * t.SalePrice : (decimal?)null
+                        Qty = t.Qty.ToString(), // Convert to string if necessary
+                        Cost = t.Cost?.ToString() ?? "", // Convert to string if necessary
+                        SalePrice = t.SalePrice?.ToString() ?? "", // Convert to string if necessary
+                        TotalCost = t.TransactionType == 1 ? (t.Qty * (t.Cost ?? 0m)) : 0m, // Calculate TotalCost
+                        TotalSale = t.TransactionType == 2 ? (t.Qty * (t.SalePrice ?? 0m)) : 0m // Calculate TotalSale
                     })
                     .ToList();
 
+                // Add totals row to the transactionsToShow list
+                var totalCost = transactionsToShow.Sum(t => t.TotalCost);
+                var totalSale = transactionsToShow.Sum(t => t.TotalSale);
+
+                transactionsToShow.Add(new
+                {
+                    TransactionID = 0, // Set to 0 or any unique value for totals row
+                    TransactionDate = "", // Leave empty for totals row
+                    TransactionTypeDescription = "", // Leave empty for totals row
+                    WarehouseDescription = "", // Leave empty for totals row
+                    InventoryItemDescription = "", // Leave empty for totals row
+                    Qty = "", // Leave empty for totals row
+                    Cost = "", // Leave empty for totals row
+                    SalePrice = "", // Leave empty for totals row
+                    TotalCost = totalCost, // Set total cost
+                    TotalSale = totalSale // Set total sale
+                });
+
                 // Convert to BindingList and bind to DataGridView
                 transactions = new BindingList<dynamic>(transactionsToShow.Select(t => (dynamic)t).ToList());
-                                
+
                 // Bind the transactions list to DataGridView
                 transactionDataGrid.DataSource = transactions;
 
@@ -140,7 +163,9 @@ namespace StoreManagement
                 MessageBox.Show($"Error loading transactions: {ex.Message}");
             }
         }
-        
+
+
+
         private void ConfigureDataGridViewColumns()
         {
             // Disable automatic column generation to manually define columns
@@ -188,6 +213,7 @@ namespace StoreManagement
             }
         }
 
+
         private void openInventoryReportFormBtn_Click(object sender, EventArgs e)
         {
             using (var reportForm = new InventoryReportForm())
@@ -195,6 +221,9 @@ namespace StoreManagement
                 reportForm.ShowDialog();
             }
         }
+
+
+
         private void transactionDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // Handle data errors here
