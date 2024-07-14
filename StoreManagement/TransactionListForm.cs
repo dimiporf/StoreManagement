@@ -25,6 +25,12 @@ namespace StoreManagement
 
             // Load transactions initially
             LoadTransactions();
+
+            // Attach DataError event handler
+            transactionDataGrid.DataError += transactionDataGrid_DataError;
+
+            // Disable option for new row by user - only use database entries
+            transactionDataGrid.AllowUserToAddRows = false;
         }
 
         private void addNewTransactionBtn_Click(object sender, EventArgs e)
@@ -44,6 +50,7 @@ namespace StoreManagement
 
         private void transactionDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+
             if (e.RowIndex >= 0)
             {
                 // Get the selected transaction ID from the DataGridView
@@ -186,6 +193,14 @@ namespace StoreManagement
             {
                 reportForm.ShowDialog();
             }
+        }
+        private void transactionDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Handle data errors here
+            MessageBox.Show($"Data error occurred: {e.Exception.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            // Optionally, log the exception or take other actions as needed
+            // Logging.LogException(e.Exception);
         }
     }
 }
