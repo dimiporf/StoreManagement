@@ -42,8 +42,8 @@ namespace StoreManagement
         private void retrieveTransactionsBtn_Click(object sender, EventArgs e)
         {
             DateTime fromDate = dateFromPicker.Value.Date;
-            DateTime toDate = dateToPicker.Value.Date;
-
+            DateTime toDate = dateToPicker.Value.Date.AddDays(1).AddTicks(-1); // Set toDate to end of day
+            
             // Load transactions within the specified date range
             LoadTransactions(fromDate, toDate);
         }
@@ -128,6 +128,8 @@ namespace StoreManagement
 
                 // Convert to BindingList and bind to DataGridView
                 transactions = new BindingList<dynamic>(transactionsToShow.Select(t => (dynamic)t).ToList());
+                                
+                // Bind the transactions list to DataGridView
                 transactionDataGrid.DataSource = transactions;
 
                 // Manually configure DataGridView columns
@@ -138,8 +140,7 @@ namespace StoreManagement
                 MessageBox.Show($"Error loading transactions: {ex.Message}");
             }
         }
-
-
+        
         private void ConfigureDataGridViewColumns()
         {
             // Disable automatic column generation to manually define columns
