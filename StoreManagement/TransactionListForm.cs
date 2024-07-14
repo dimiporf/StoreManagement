@@ -85,14 +85,14 @@ namespace StoreManagement
             LoadTransactions();
         }
 
-        private void LoadTransactions()
+        protected void LoadTransactions()
         {
             DateTime fromDate = DateTime.MinValue;
             DateTime toDate = DateTime.MaxValue;
             LoadTransactions(fromDate, toDate);
         }
 
-        private void LoadTransactions(DateTime fromDate, DateTime toDate)
+        protected void LoadTransactions(DateTime fromDate, DateTime toDate)
         {
             try
             {
@@ -180,5 +180,12 @@ namespace StoreManagement
             }
         }
 
+        private void openInventoryReportFormBtn_Click(object sender, EventArgs e)
+        {
+            using (var reportForm = new InventoryReportForm())
+            {
+                reportForm.ShowDialog();
+            }
+        }
     }
 }

@@ -36,11 +36,6 @@ namespace StoreManagement
         {
             dateFromPicker = new DateTimePicker();
             transactionDataGrid = new DataGridView();
-            addNewTransactionBtn = new Button();
-            retrieveTransactionsBtn = new Button();
-            fromLabel = new Label();
-            toLabel = new Label();
-            dateToPicker = new DateTimePicker();
             TransactionID = new DataGridViewTextBoxColumn();
             TransactionDate = new DataGridViewTextBoxColumn();
             TransactionType = new DataGridViewTextBoxColumn();
@@ -51,6 +46,12 @@ namespace StoreManagement
             SalePrice = new DataGridViewTextBoxColumn();
             TotalCost = new DataGridViewTextBoxColumn();
             TotalSales = new DataGridViewTextBoxColumn();
+            addNewTransactionBtn = new Button();
+            retrieveTransactionsBtn = new Button();
+            fromLabel = new Label();
+            toLabel = new Label();
+            dateToPicker = new DateTimePicker();
+            openInventoryReportFormBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)transactionDataGrid).BeginInit();
             SuspendLayout();
             // 
@@ -70,51 +71,6 @@ namespace StoreManagement
             transactionDataGrid.Size = new Size(945, 391);
             transactionDataGrid.TabIndex = 1;
             transactionDataGrid.CellDoubleClick += transactionDataGrid_CellDoubleClick;
-            // 
-            // addNewTransactionBtn
-            // 
-            addNewTransactionBtn.Location = new Point(835, 12);
-            addNewTransactionBtn.Name = "addNewTransactionBtn";
-            addNewTransactionBtn.Size = new Size(139, 33);
-            addNewTransactionBtn.TabIndex = 2;
-            addNewTransactionBtn.Text = "Add New Transaction";
-            addNewTransactionBtn.UseVisualStyleBackColor = true;
-            addNewTransactionBtn.Click += addNewTransactionBtn_Click;
-            // 
-            // retrieveTransactionsBtn
-            // 
-            retrieveTransactionsBtn.Location = new Point(704, 12);
-            retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
-            retrieveTransactionsBtn.Size = new Size(125, 33);
-            retrieveTransactionsBtn.TabIndex = 3;
-            retrieveTransactionsBtn.Text = "Retrieve Transactions";
-            retrieveTransactionsBtn.UseVisualStyleBackColor = true;
-            retrieveTransactionsBtn.Click += retrieveTransactionsBtn_Click;
-            // 
-            // fromLabel
-            // 
-            fromLabel.AutoSize = true;
-            fromLabel.Location = new Point(29, 21);
-            fromLabel.Name = "fromLabel";
-            fromLabel.Size = new Size(35, 15);
-            fromLabel.TabIndex = 4;
-            fromLabel.Text = "From";
-            // 
-            // toLabel
-            // 
-            toLabel.AutoSize = true;
-            toLabel.Location = new Point(302, 21);
-            toLabel.Name = "toLabel";
-            toLabel.Size = new Size(19, 15);
-            toLabel.TabIndex = 5;
-            toLabel.Text = "To";
-            // 
-            // dateToPicker
-            // 
-            dateToPicker.Location = new Point(327, 15);
-            dateToPicker.Name = "dateToPicker";
-            dateToPicker.Size = new Size(226, 23);
-            dateToPicker.TabIndex = 6;
             // 
             // TransactionID
             // 
@@ -167,11 +123,67 @@ namespace StoreManagement
             TotalSales.HeaderText = "TotalSales";
             TotalSales.Name = "TotalSales";
             // 
+            // addNewTransactionBtn
+            // 
+            addNewTransactionBtn.Location = new Point(835, 12);
+            addNewTransactionBtn.Name = "addNewTransactionBtn";
+            addNewTransactionBtn.Size = new Size(139, 33);
+            addNewTransactionBtn.TabIndex = 2;
+            addNewTransactionBtn.Text = "Add New Transaction";
+            addNewTransactionBtn.UseVisualStyleBackColor = true;
+            addNewTransactionBtn.Click += addNewTransactionBtn_Click;
+            // 
+            // retrieveTransactionsBtn
+            // 
+            retrieveTransactionsBtn.Location = new Point(704, 12);
+            retrieveTransactionsBtn.Name = "retrieveTransactionsBtn";
+            retrieveTransactionsBtn.Size = new Size(125, 33);
+            retrieveTransactionsBtn.TabIndex = 3;
+            retrieveTransactionsBtn.Text = "Retrieve Transactions";
+            retrieveTransactionsBtn.UseVisualStyleBackColor = true;
+            retrieveTransactionsBtn.Click += retrieveTransactionsBtn_Click;
+            // 
+            // fromLabel
+            // 
+            fromLabel.AutoSize = true;
+            fromLabel.Location = new Point(29, 21);
+            fromLabel.Name = "fromLabel";
+            fromLabel.Size = new Size(35, 15);
+            fromLabel.TabIndex = 4;
+            fromLabel.Text = "From";
+            // 
+            // toLabel
+            // 
+            toLabel.AutoSize = true;
+            toLabel.Location = new Point(302, 21);
+            toLabel.Name = "toLabel";
+            toLabel.Size = new Size(19, 15);
+            toLabel.TabIndex = 5;
+            toLabel.Text = "To";
+            // 
+            // dateToPicker
+            // 
+            dateToPicker.Location = new Point(327, 15);
+            dateToPicker.Name = "dateToPicker";
+            dateToPicker.Size = new Size(226, 23);
+            dateToPicker.TabIndex = 6;
+            // 
+            // openInventoryReportFormBtn
+            // 
+            openInventoryReportFormBtn.Location = new Point(29, 462);
+            openInventoryReportFormBtn.Name = "openInventoryReportFormBtn";
+            openInventoryReportFormBtn.Size = new Size(144, 23);
+            openInventoryReportFormBtn.TabIndex = 7;
+            openInventoryReportFormBtn.Text = "Inventory Report";
+            openInventoryReportFormBtn.UseVisualStyleBackColor = true;
+            openInventoryReportFormBtn.Click += openInventoryReportFormBtn_Click;
+            // 
             // TransactionListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1040, 497);
+            Controls.Add(openInventoryReportFormBtn);
             Controls.Add(dateToPicker);
             Controls.Add(toLabel);
             Controls.Add(fromLabel);
@@ -205,5 +217,6 @@ namespace StoreManagement
         private DataGridViewTextBoxColumn SalePrice;
         private DataGridViewTextBoxColumn TotalCost;
         private DataGridViewTextBoxColumn TotalSales;
+        private Button openInventoryReportFormBtn;
     }
 }
