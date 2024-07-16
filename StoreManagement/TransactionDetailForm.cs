@@ -116,6 +116,16 @@ namespace StoreManagement
                 }
                 else
                 {
+                    // Validate if there's enough stock for a sale transaction
+                    if (_transaction.TransactionType == 2) // Sale transaction
+                    {
+                        var currentStock = _inventoryService.GetStock(_transaction.InventoryItemID, _transaction.WarehouseID);
+                        if (currentStock.Quantity < _transaction.Qty)
+                        {
+                            throw new InvalidOperationException("Insufficient stock for sale.");
+                        }
+                    }
+
                     _inventoryService.UpdateTransaction(_transaction);
                 }
 

@@ -103,20 +103,37 @@ namespace StoreManagement
 
         private int CalculateBalanceAtStart(int inventoryItemId, int warehouseId, DateTime fromDate)
         {
-            // Calculate the balance of the inventory item at the start of the specified period
-            var stockBeforePeriod = _transactionRepository.GetAll()
-                .Where(t => t.InventoryItemID == inventoryItemId && t.WarehouseID == warehouseId && t.TransactionDate < fromDate)
-                .GroupBy(t => t.InventoryItemID)
-                .Select(g => new
+            try
+            {
+                // Check for valid inventoryItemId and warehouseId
+                if (inventoryItemId <= 0 || warehouseId <= 0)
                 {
-                    // Sum the quantities of incoming (TransactionType == 1) and subtract outgoing (TransactionType == 2) transactions
-                    Balance = g.Where(t => t.TransactionType == 1).Sum(t => t.Qty) - g.Where(t => t.TransactionType == 2).Sum(t => t.Qty)
-                })
-                .FirstOrDefault();
+                    throw new ArgumentException("Invalid inventory item ID or warehouse ID.");
+                }
 
-            // Return the calculated balance or 0 if no data found
-            return stockBeforePeriod?.Balance ?? 0;
+                // Calculate the balance of the inventory item at the start of the specified period
+                var stockBeforePeriod = _transactionRepository.GetAll()
+                    .Where(t => t.InventoryItemID == inventoryItemId && t.WarehouseID == warehouseId && t.TransactionDate < fromDate)
+                    .GroupBy(t => t.InventoryItemID)
+                    .Select(g => new
+                    {
+                        // Sum the quantities of incoming (TransactionType == 1) and subtract outgoing (TransactionType == 2) transactions
+                        Balance = g.Sum(t => t.TransactionType == 1 ? t.Qty : -t.Qty)
+                    })
+                    .FirstOrDefault();
+
+                // Return the calculated balance or 0 if no data found
+                return stockBeforePeriod?.Balance ?? 0;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implementation of logging depends on your logging framework)
+                Console.WriteLine($"Error calculating balance at start: {ex.Message}");
+                // Return a default value in case of an error
+                return 0;
+            }
         }
+
 
         private void ConfigureDataGridViewColumns()
         {
