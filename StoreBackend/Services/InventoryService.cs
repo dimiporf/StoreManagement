@@ -49,12 +49,40 @@ namespace StoreBackend.Services
             var existingTransaction = _transactionRepository.GetById(transaction.TransactionID);
             if (existingTransaction != null)
             {
-                RevertInventoryStock(existingTransaction); // Revert the existing transaction's impact on stock
-                _transactionRepository.Update(transaction); // Update the transaction with the new details
-                _transactionRepository.Save(); // Save changes to the transaction repository
-                UpdateInventoryStock(transaction); // Apply the updated transaction's impact on stock
+                // Create a copy of the existing transaction to preserve the original values
+                var oldTransaction = new InventoryTransaction
+                {
+                    TransactionID = existingTransaction.TransactionID,
+                    InventoryItemID = existingTransaction.InventoryItemID,
+                    WarehouseID = existingTransaction.WarehouseID,
+                    TransactionType = existingTransaction.TransactionType,
+                    Qty = existingTransaction.Qty,
+                    Cost = existingTransaction.Cost,
+                    SalePrice = existingTransaction.SalePrice,
+                    TransactionDate = existingTransaction.TransactionDate
+                };
+
+                // Revert the original transaction's impact on stock
+                RevertInventoryStock(oldTransaction);
+
+                // Update the existing transaction with the new values
+                existingTransaction.InventoryItemID = transaction.InventoryItemID;
+                existingTransaction.WarehouseID = transaction.WarehouseID;
+                existingTransaction.TransactionType = transaction.TransactionType;
+                existingTransaction.Qty = transaction.Qty;
+                existingTransaction.Cost = transaction.Cost;
+                existingTransaction.SalePrice = transaction.SalePrice;
+                existingTransaction.TransactionDate = transaction.TransactionDate;
+
+                // Save the changes to the transaction repository
+                _transactionRepository.Update(existingTransaction);
+                _transactionRepository.Save();
+
+                // Apply the updated transaction's impact on stock
+                UpdateInventoryStock(existingTransaction);
             }
         }
+
 
         // Deletes a transaction and adjusts the inventory stock accordingly
         public void DeleteTransaction(int transactionId)
@@ -137,8 +165,14 @@ namespace StoreBackend.Services
                     _stockRepository.Insert(stock);
                     _stockRepository.Save();
                 }
+                else
+                {
+                    // Handle case where stock does not exist and transaction is a sale
+                    throw new InvalidOperationException("Stock not found for sale transaction.");
+                }
             }
         }
+
 
 
         // Reverts the inventory stock based on the given transaction
